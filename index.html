@@ -237,13 +237,16 @@ button { font: inherit; color: inherit; }
 .orbit { --s: min(100%, 470px); position: relative; width: var(--s); aspect-ratio: 1; margin-inline: auto; }
 .core { position: absolute; inset: 37%; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 35% 30%, #1a2b48, #0b1222); border: 1px solid var(--line-hi); box-shadow: 0 0 60px rgba(46,230,214,.25); font: 600 clamp(10px, 1.5vw, 13px)/1.2 var(--f-disp); }
 .core small { display: block; font: 500 9.5px/1 var(--f-mono); color: var(--cyan); margin-top: 4px; letter-spacing: .1em; }
-.orb { position: absolute; border-radius: 50%; border: 1px solid var(--line); animation: spin var(--t) linear infinite; }
+.orb { position: absolute; border-radius: 50%; border: 1px solid var(--line); }
+.orbit.go .orb { animation: spin var(--t) linear infinite; }
+.orbit.go .orb.o2 { animation-direction: reverse; }
 .orb.o1 { inset: 22%; --t: 34s; }
-.orb.o2 { inset: 10%; --t: 52s; animation-direction: reverse; border-style: dashed; }
+.orb.o2 { inset: 10%; --t: 52s; border-style: dashed; }
 .orb.o3 { inset: 0; --t: 70s; }
-.orb .lb { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
-.orb .lb span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font: 600 11px/1 var(--f-mono); padding: 6px 9px; border-radius: 99px; background: #0d1629; border: 1px solid var(--line-hi); animation: spin var(--t) linear infinite reverse; }
-.orb.o2 .lb span { animation-direction: normal; }
+.orb .lb { position: absolute; left: 50%; top: 50%; width: 0; height: 0; display: flex; align-items: center; justify-content: center; }
+.orb .lb span { flex: none; white-space: nowrap; font: 600 11px/1 var(--f-mono); padding: 6px 9px; border-radius: 99px; background: #0d1629; border: 1px solid var(--line-hi); }
+.orbit.go .orb .lb span { animation: spin var(--t) linear infinite reverse; }
+.orbit.go .orb.o2 .lb span { animation-direction: normal; }
 .orb.o1 .lb span { color: var(--cyan); border-color: rgba(46,230,214,.4); }
 .orb.o2 .lb span { color: var(--amber); border-color: rgba(255,181,71,.35); }
 .orb.o3 .lb span { color: var(--text); }
@@ -328,7 +331,7 @@ button { font: inherit; color: inherit; }
 @media (max-width: 620px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
   .ach, .proj { grid-template-columns: 1fr; }
-  .counter span { display: none; }
+  #cName { display: none; }
   .legend .glass { grid-template-columns: 1fr; gap: 4px; }
   .brand span { display: none; }
   .topbar { gap: 8px; }
@@ -915,6 +918,8 @@ button { font: inherit; color: inherit; }
       o.appendChild(d);
     });
   });
+  /* start rings and labels in the same frame so the counter-rotation keeps labels upright */
+  var orbitEl = document.getElementById("orbit"); void orbitEl.offsetWidth; orbitEl.classList.add("go");
 
   /* copy email */
   $("copyBtn").addEventListener("click", function () {
